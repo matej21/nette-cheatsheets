@@ -1,0 +1,264 @@
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+	<h1>Nette DI cheatsheet</h1>
+
+	<h2>How should I inject?</h2>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Constructor injection</div>
+		<div class="panel-body panel-code">
+				<pre>
+public function __construct(IMailer $mailer)</pre>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Method injection (inject* method)</div>
+		<div class="panel-body panel-code">
+				<pre>
+public function injectMailer(IMailer $mailer)</pre>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Property injection (@inject annotation)</div>
+		<div class="panel-body panel-code">
+				<pre>
+/** @var \Nette\Mail\IMailer @inject */
+public $mailer;</pre>
+
+		</div>
+	</div>
+
+
+	<table class="table table-bordered table-di-recommendation">
+		<thead>
+		<tr>
+			<th style="width: 28%" class="question">What should I use?</th>
+			<th style="width: 24%">Presenter</th>
+			<th style="width: 24%">Service</th>
+			<th style="width: 24%">Component with factory</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<th>Constructor</th>
+			<td class="recommend-level level-2">
+				<i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+		</tr>
+		<tr>
+			<th>Inject method</th>
+			<td class="recommend-level level-2">
+				<i class="icon-star"></i><i class="icon-star"></i>
+				<sup class="inject-note">1)</sup></td>
+			<td class="recommend-level level-3">
+				<i class="icon-star"></i>
+				<sup class="inject-note">2)</sup></td>
+			<td class="recommend-level level-3">
+				<i class="icon-star"></i>
+				<sup class="inject-note">2)</sup>
+				<sup class="inject-note">3)</sup>
+			</td>
+		</tr>
+		<tr>
+			<th>@inject</th>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-4">
+				<i class="icon-cancel-circled"></i>
+			</td>
+			<td class="recommend-level level-4">
+				<i class="icon-cancel-circled"></i>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<p class="note">1) the old way, <code>@inject</code> annotation is preferred now</p>
+
+	<p class="note">2) it is required to enable this using <code>inject: true</code> in service definition in your neon file</p>
+
+	<p class="note">3) only for specific cases, like BaseControl and injection of TemplateFactory. Prefer constructor injection elsewhere</p>
+
+	<div class="row inject-legend">
+		<div class="col-md-6">
+			<div>
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i> - recommended
+			</div>
+			<div>
+				<i class="icon-star"></i><i class="icon-star"></i> - you can use this
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div>
+				<i class="icon-star"></i> - avoid this
+			</div>
+			<div>
+				<i class="icon-cancel-circled"></i> - do not use
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="panel panel-warning">
+		<div class="panel-heading">TIP</div>
+		<div class="panel-body">
+			Also try Kdyby/Autowired (<a href="http://www.github.com/Kdyby/Autowired">github.com/kdyby/autowired</a>) extension,
+			which allows you to work with dependencies in similar way as <code>@inject</code> annotation allows, but this extension loads
+			dependencies "lazy".
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<h2>What should I inject?</h2>
+
+	<p>
+		<small>(declared class/interface inject according to the left column)</small>
+	</p>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Cache
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/caching">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Require <a href="http://api.nette.org/2.1/Nette.Caching.IStorage.html"><code>Nette\Caching\IStorage</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//$storage contains IStorage
+$cache = new Nette\Caching\Cache($storage);
+$cache->load($key);</pre>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">HTTP
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/http-request-response">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			HTTP Request: <a href="http://api.nette.org/2.1/Nette.Http.IRequest.html"><code>Nette\Http\IRequest</code></a>
+			<ul>
+				<li><code>getUrl()</code> - <a href="http://api.nette.org/2.1/Nette.Http.UrlScript.html"><code>Nette\Http\UrlScript</code></a></li>
+				<li><code>getHeaders()</code> - array of headers</li>
+				<li><code>getHeader($header)</code></li>
+				<li><code>getCookie($key, $default = NULL)</code></li>
+				<li><code>getRemoteAddress()</code></li>
+				<li>...</li>
+			</ul>
+			HTTP Response: <a href="http://api.nette.org/2.1/Nette.Http.IResponse.html"><code>Nette\Http\IResponse</code></a>
+
+			<ul>
+				<li><code>setCode($code)</code></li>
+				<li><code>setCookie($cookie, $value, $expire, ...)</code></li>
+				<li><code>setHeader($header, $value)</code></li>
+				<li><code>isSent()</code></li>
+				<li>...</li>
+			</ul>
+
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">Mailing
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/mailing">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Require <a href="http://api.nette.org/2.1/Nette.Mail.IMailer.html"><code>Nette\Mail\IMailer</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//$mailer contains IMailer
+$message = new Nette\Mail\Message();
+$message->addTo($to);
+...
+$mailer->send($message);</pre>
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">Session
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/sessions">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Require <a href="http://api.nette.org/2.1/Nette.Http.Session.html"><code>Nette\Http\Session</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//$session contains Session
+$section = $session->getSection($mySection);
+$section->key = $value;</pre>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Database
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/database">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Require <a href="http://api.nette.org/2.1/Nette.Database.Context.html"><code>Nette\Database\Context</code></a>
+			<ul>
+				<li><code>query($query[, $arg[,...]])</code> - executes query</li>
+				<li><code>table($name)</code> - returns <a
+						href="http://api.nette.org/2.1/Nette.Database.Table.Selection.html"><code>Nette\Database\Selection</code></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">User and security
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/en/2.1/access-control">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			User - <a href="http://api.nette.org/2.1/Nette.Security.User.html"><code>Nette\Security\User</code></a>
+			<ul>
+				<li><code>isLoggedIn()</code></li>
+				<li><code>getIdentity()</code></li>
+				<li><code>getRoles()</code></li>
+				<li><code>isInRole($role)</code></li>
+				<li><code>isAllowed($resource, $privilege)</code></li>
+				<li><code>login($id = NULL, $password = NULL)</code></li>
+				<li><code>logout($clearIdentity = FALSE)</code></li>
+			</ul>
+			Authorizator - <a href="http://api.nette.org/2.1/Nette.Security.IAuthorizator.html"><code>Nette\Security\IAuthorizator</code></a><br/>
+			Authenticator - <a href="http://api.nette.org/2.1/Nette.Security.IAuthenticator.html"><code>Nette\Security\IAuthenticator</code></a><br/>
+			User storage - <a href="http://api.nette.org/2.1/Nette.Security.IUserStorage.html"><code>Nette\Security\IUserStorage</code></a><br/>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Application</div>
+		<div class="panel-body">
+			Application - <a href="http://api.nette.org/2.1/Nette.Application.Application.html"><code>Nette\Application\Application</code></a>
+			<ul>
+				<li><code>getPresenter()</code> - returns current presenter if any</li>
+			</ul>
+			Router - <a href="http://api.nette.org/2.1/Nette.Application.IRouter.html"><code>Nette\Application\IRouter</code></a>
+			<ul>
+				<li><code>constructUrl($appRequest, $refUrl)</code> - creates URL for given application request</li>
+			</ul>
+		</div>
+	</div>
+	{footer}
+</div>
+</div>
+</div>

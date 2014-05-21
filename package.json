@@ -1,0 +1,14 @@
+{
+  "name": "nette-cheatsheets",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-cssmin": "~0.9.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-less": "~0.10.0",
+    "grunt-fontello": "git+https://github.com/jubalm/grunt-fontello.git",
+    "grunt-shell": "~0.6.4",
+    "grunt-contrib-copy": "~0.5.0",
+    "bower": "~1.2.8"
+  }
+}

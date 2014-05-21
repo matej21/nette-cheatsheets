@@ -1,0 +1,7 @@
+{
+	"name": "nette-cheatsheet",
+	"dependencies": {
+		"bootstrap": "3.0.*"
+	}
+
+}

@@ -1,0 +1,134 @@
+@import "../../vendor/bootstrap/less/variables.less";
+@import "../../vendor/bootstrap/less/mixins.less";
+@import "../../vendor/bootstrap/less/normalize.less";
+@import "../../vendor/bootstrap/less/scaffolding.less";
+@import "../../vendor/bootstrap/less/type.less";
+@import "../../vendor/bootstrap/less/code.less";
+@import "../../vendor/bootstrap/less/panels.less";
+@import "../../vendor/bootstrap/less/grid.less";
+@import "../../vendor/bootstrap/less/tables.less";
+@import "../../vendor/bootstrap/less/panels.less";
+
+
+h1 {
+	font-size: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.panel {
+	margin-bottom: 10px;
+}
+
+.panel-heading {
+	padding: 3px 10px;
+}
+
+.panel-body.panel-code {
+	padding: 0;
+	background: #333;
+}
+
+.panel-body {
+	padding: 5px;
+}
+
+.panel-body ul {
+	padding-left: 2px;
+}
+
+.panel-body li {
+	list-style: square inside;
+}
+
+.panel-body.panel-code pre {
+	border: 0;
+	margin: 0;
+	padding: 5px;
+	background: inherit;
+	color: #eee;
+	font-size: 12px;
+	font-family: "Droid Sans Mono", monospace;
+}
+
+td.recommend-level {
+	color: #fff;
+	text-align: center;
+}
+
+td.recommend-level.level-1 {
+	background: green;
+}
+
+td.recommend-level.level-2 {
+	background: #9eaa00;
+}
+
+td.recommend-level.level-3 {
+	background: #bc6700;
+}
+
+td.recommend-level.level-4 {
+	background: #800600;
+}
+
+table.table-di-recommendation > thead > tr > th.question {
+	color: #666;
+}
+
+table.table-di-recommendation > thead > tr > th, table.table-di-recommendation > tbody > tr > th {
+	font-weight: normal;
+	font-size: 12px;
+}
+
+table.table-di-recommendation > thead > tr > th,
+table.table-di-recommendation > tbody > tr > th,
+table.table-di-recommendation > tbody > tr > td {
+	padding: 4px;
+}
+
+.inject-note {
+	font-weight: bold;
+}
+
+p.note {
+	font-size: 12px;
+	color: #555;
+	margin-bottom: 5px;
+}
+
+.inject-legend {
+	font-size: 13px;
+}
+
+.logo {
+	width: 150px;
+}
+
+.copyright {
+	color: #777;
+	margin-top: 10px;
+}
+
+a > code {
+	color: #1d59d9;
+}
+
+.panel {
+	.box-shadow(none);
+	border-radius: 0;
+	border: none;
+	background: #f8f8f8;
+	.panel-heading {
+		border: 0;
+	}
+}
+
+hr {
+	border: 0;
+	height: 1px;
+	background: #ddd;
+}

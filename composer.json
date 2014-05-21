@@ -1,0 +1,11 @@
+{
+	"name": "matej21/nette-cheatsheets",
+	"require": {
+		"nette/nette": "@dev",
+		"kdyby/console": "@dev",
+		"janmarek/webloader": "@dev"
+	},
+	"autoload": {
+		"classmap": ["app/"]
+	}
+}

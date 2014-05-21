@@ -1,0 +1,266 @@
+<div class="container">
+<div class="row">
+<div class="col-md-4">
+	<h1>Nette DI cheatsheet</h1>
+
+	<h2>Jak to tam vstříknout?</h2>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Constructor injection</div>
+		<div class="panel-body panel-code">
+				<pre>
+public function __construct(IMailer $mailer)</pre>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Method injection (inject* metoda)</div>
+		<div class="panel-body panel-code">
+				<pre>
+public function injectMailer(IMailer $mailer)</pre>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Property injection (@inject anotace)</div>
+		<div class="panel-body panel-code">
+				<pre>
+/** @var \Nette\Mail\IMailer @inject */
+public $mailer;</pre>
+
+		</div>
+	</div>
+
+
+	<table class="table table-bordered table-di-recommendation">
+		<thead>
+		<tr>
+			<th style="width: 28%" class="question">Co kde použít?</th>
+			<th style="width: 24%">Presenter</th>
+			<th style="width: 24%">Služba</th>
+			<th style="width: 24%">Komponenta s továrnou</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<th>Konstruktor</th>
+			<td class="recommend-level level-2">
+				<i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+		</tr>
+		<tr>
+			<th>Metoda inject</th>
+			<td class="recommend-level level-2">
+				<i class="icon-star"></i><i class="icon-star"></i>
+				<sup class="inject-note">1)</sup></td>
+			<td class="recommend-level level-3">
+				<i class="icon-star"></i>
+				<sup class="inject-note">2)</sup></td>
+			<td class="recommend-level level-3">
+				<i class="icon-star"></i>
+				<sup class="inject-note">2)</sup>
+				<sup class="inject-note">3)</sup>
+			</td>
+		</tr>
+		<tr>
+			<th>@inject</th>
+			<td class="recommend-level level-1">
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i>
+			</td>
+			<td class="recommend-level level-4">
+				<i class="icon-cancel-circled"></i>
+			</td>
+			<td class="recommend-level level-4">
+				<i class="icon-cancel-circled"></i>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+	<p class="note">1) starý způsob, nyní použijte raději <code>@inject</code> anotace</p>
+
+	<p class="note">2) je nutno zapnout v neonu <code>inject: true</code> u dané služby/komponenty</p>
+
+	<p class="note">3) vhodné pouze pro specifcké případy jako BaseControl a injectování TemplateFactory. Jinak používejte konstruktor</p>
+
+	<div class="row inject-legend">
+		<div class="col-md-6">
+			<div>
+				<i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i> - doporučeno
+
+			</div>
+			<div>
+				<i class="icon-star"></i><i class="icon-star"></i> - klidně použijte
+
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div>
+				<i class="icon-star"></i> - vyvarujte se
+			</div>
+			<div>
+				<i class="icon-cancel-circled"></i> - vážně nedoporučeno
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="panel panel-warning">
+		<div class="panel-heading">TIP</div>
+		<div class="panel-body">
+			Zkuste také rozšíření Kdyby/Autowired (<a href="http://www.github.com/Kdyby/Autowired">github.com/kdyby/autowired</a>),
+			které umožňuje pracovat se závislostmi podobným způsobem jako anotace <code>@inject</code>, ale služby načítá "lazy", tedy až
+			ve chvíli, kdy jsou skutečně potřeba.
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<h2>Co tam vstříknout?</h2>
+
+	<p>
+		<small>(uvedenou třídu/rozhraní vždy vyžádejte dle postupu vlevo)</small>
+	</p>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Cache
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/caching">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Vyžadujte rozhraní <a href="http://api.nette.org/2.1/Nette.Caching.IStorage.html"><code>Nette\Caching\IStorage</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//ve $storage je injectované IStorage
+$cache = new Nette\Caching\Cache($storage);
+$cache->load($key);</pre>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">HTTP
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/http-request-response">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			HTTP požadavek: <a href="http://api.nette.org/2.1/Nette.Http.IRequest.html"><code>Nette\Http\IRequest</code></a>
+			<ul>
+				<li><code>getUrl()</code> - <a href="http://api.nette.org/2.1/Nette.Http.UrlScript.html"><code>Nette\Http\UrlScript</code></a></li>
+				<li><code>getHeaders()</code> - pole hlaviček</li>
+				<li><code>getHeader($header)</code></li>
+				<li><code>getCookie($key, $default = NULL)</code></li>
+				<li><code>getRemoteAddress()</code></li>
+				<li>...</li>
+			</ul>
+			HTTP odpověď: <a href="http://api.nette.org/2.1/Nette.Http.IResponse.html"><code>Nette\Http\IResponse</code></a>
+
+			<ul>
+				<li><code>setCode($code)</code></li>
+				<li><code>setCookie($cookie, $value, $expire, ...)</code></li>
+				<li><code>setHeader($header, $value)</code></li>
+				<li><code>isSent()</code></li>
+				<li>...</li>
+			</ul>
+
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">Maily
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/mailing">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Vyžadujte <a href="http://api.nette.org/2.1/Nette.Mail.IMailer.html"><code>Nette\Mail\IMailer</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//v $mailer je injectnuty IMailer
+$message = new Nette\Mail\Message();
+$message->addTo($to);
+...
+$mailer->send($message);</pre>
+		</div>
+	</div>
+</div>
+<div class="col-md-4">
+	<div class="panel panel-default">
+		<div class="panel-heading">Session
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/sessions">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Vyžadujte <a href="http://api.nette.org/2.1/Nette.Http.Session.html"><code>Nette\Http\Session</code></a>
+		</div>
+		<div class="panel-body panel-code">
+					<pre>
+//v $session je injectnute Session
+$section = $session->getSection($mySection);
+$section->key = $value;</pre>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Databáze
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/database">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Vyžadujte <a href="http://api.nette.org/2.1/Nette.Database.Context.html"><code>Nette\Database\Context</code></a>
+			<ul>
+				<li><code>query($query[, $arg[,...]])</code> - provede dotaz</li>
+				<li><code>table($name)</code> - vrátí <a
+						href="http://api.nette.org/2.1/Nette.Database.Table.Selection.html"><code>Nette\Database\Selection</code></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">Uživatel a zabezpečení
+			<small class="pull-right">
+				(<a href="http://doc.nette.org/cs/2.1/access-control">doc</a>)
+			</small>
+		</div>
+		<div class="panel-body">
+			Uživatel - <a href="http://api.nette.org/2.1/Nette.Security.User.html"><code>Nette\Security\User</code></a>
+			<ul>
+				<li><code>isLoggedIn()</code></li>
+				<li><code>getIdentity()</code></li>
+				<li><code>getRoles()</code></li>
+				<li><code>isInRole($role)</code></li>
+				<li><code>isAllowed($resource, $privilege)</code></li>
+				<li><code>login($id = NULL, $password = NULL)</code></li>
+				<li><code>logout($clearIdentity = FALSE)</code></li>
+			</ul>
+			Autorizátor - <a href="http://api.nette.org/2.1/Nette.Security.IAuthorizator.html"><code>Nette\Security\IAuthorizator</code></a><br/>
+			Autentikátor - <a href="http://api.nette.org/2.1/Nette.Security.IAuthenticator.html"><code>Nette\Security\IAuthenticator</code></a><br/>
+			User storage - <a href="http://api.nette.org/2.1/Nette.Security.IUserStorage.html"><code>Nette\Security\IUserStorage</code></a><br/>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Aplikace</div>
+		<div class="panel-body">
+			Aplikace - <a href="http://api.nette.org/2.1/Nette.Application.Application.html"><code>Nette\Application\Application</code></a>
+			<ul>
+				<li><code>getPresenter()</code> - vrátí aktuální presenter</li>
+			</ul>
+			Router - <a href="http://api.nette.org/2.1/Nette.Application.IRouter.html"><code>Nette\Application\IRouter</code></a>
+			<ul>
+				<li><code>constructUrl($appRequest, $refUrl)</code> - vytvoří URL pro aplikační požadavek</li>
+			</ul>
+		</div>
+	</div>
+	{footer}
+</div>
+</div>
+</div>

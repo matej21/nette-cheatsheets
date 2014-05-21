@@ -1,0 +1,13 @@
+{block #content}
+	<div class="container">
+		<h1>Nette cheatsheets</h1>
+		{foreach $locales as $locale}
+			<h2>{$locale}</h2>
+			<ul >
+				<li n:foreach="$cheatsheets[$locale] as $cheatsheet">
+					<a n:href="Detail:default locale=>$cheatsheet->locale, id=>$cheatsheet->identifier">{$cheatsheet->title}</a>
+					<a n:href="Detail:pdf locale=>$cheatsheet->locale, id=>$cheatsheet->identifier" class="btn btn-danger">PDF</a>
+				</li>
+			</ul>
+		{/foreach}
+	</div>
